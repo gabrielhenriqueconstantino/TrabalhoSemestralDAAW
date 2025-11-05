@@ -1,0 +1,53 @@
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build e artefatos
+bin/
+obj/
+[Bb]uild/
+[Bb]uild[Ll]og.*
+*.log
+*.tlog
+*.tmp
+*.cache
+*.dbmdl
+*.VC.db
+*.pdb
+*.ilk
+*.exe
+*.dll
+
+## Publicação e pacotes
+publish/
+packages/
+*.nupkg
+*.snupkg
+*.nuspec
+*.psmdcp
+
+## Configurações locais
+*.localsettings.json
+
+## Ferramentas de desenvolvimento
+.vscode/
+.devcontainer/
+.idea/
+*.DotSettings.user
+_ReSharper*/
+
+## Arquivos do sistema
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.DS_Store
+
+## Pastas específicas do projeto
+ProjetoBimestralCEGC/bin/
+ProjetoBimestralCEGC/obj/
+
+*.csproj.user
