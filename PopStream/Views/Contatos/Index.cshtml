@@ -1,0 +1,45 @@
+﻿@model IEnumerable<PopStream.Models.Contato>
+
+@{
+    ViewData["Title"] = "Mensagens";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="color: #fff">Nome</th>
+            <th style="color: #fff">E‑mail</th>
+            <th style="color: #fff">Assunto</th>
+            <th style="color: #fff">Enviada</th>
+            <th style="color: #fff" class="text-end">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="5" class="text-center text-muted">Nenhuma mensagem encontrada.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="color: #fff">@item.NomeCompleto</td>
+                    <td style="color: #fff">@item.Email</td>
+                    <td style="color: #fff">@item.Assunto</td>
+                    <td style="color: #fff">@item.DataEnvio.ToLocalTime().ToString("g")</td>
+                    <td style="color: #fff" class="text-end">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Ver</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger ms-1">Excluir</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">Voltar ao Painel</a>

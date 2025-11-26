@@ -1,0 +1,20 @@
+﻿@model PopStream.Models.Contato
+
+@{
+    ViewData["Title"] = "Detalhes da Mensagem";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5 style="color: black" class="card-title">@Model.Assunto</h5>
+        <h6 class="card-subtitle mb-2 text-muted">De: @Model.NomeCompleto &lt;@Model.Email&gt;</h6>
+        <p style="color: black" class="card-text">@Model.Mensagem</p>
+        <p class="text-muted">Enviada: @Model.DataEnvio.ToLocalTime().ToString("f")</p>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Excluir</a>
+    </div>
+</div>

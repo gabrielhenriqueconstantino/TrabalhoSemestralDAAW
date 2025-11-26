@@ -1,0 +1,67 @@
+﻿@model IEnumerable<PopStream.Models.Producao>
+
+@{
+    ViewData["Title"] = "Produções";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table align-middle">
+    <thead style="color: #fff">
+        <tr>
+            <th>Capa</th>
+            <th>Título</th>
+            <th>Ano</th>
+            <th>Diretor</th>
+            <th>Gêneros</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:140px; color: #fff">
+                    @if (!string.IsNullOrEmpty(item.CapaCaminho))
+                    {
+                        <img src="@item.CapaCaminho" alt="Capa" style="max-width:120px; height:auto; border-radius:6px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Sem capa</span>
+                    }
+                </td>
+
+                <td>
+                    <strong style="color: #fff">@item.Titulo</strong>
+                </td>
+
+                <td>
+                    <strong style="color: #fff">@(item.DataLancamento?.Year.ToString() ?? "—")</strong>
+                </td>
+
+                <td>
+                    <strong style="color: #fff">@(!string.IsNullOrEmpty(item.Diretor) ? item.Diretor : "—")</strong>
+                </td>
+
+                <td>
+                    @if (item.Generos != null && item.Generos.Any())
+                    {
+                        foreach (var pg in item.Generos)
+                        {
+                            <span class="badge bg-secondary me-1">@pg.Genero?.Nome</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                </td>
+
+                <td class="text-end">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Detalhes</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,129 @@
+﻿@model PopStream.ViewModels.ProducaoFormViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar Filme";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="Producao.Titulo" class="form-label"></label>
+        <input asp-for="Producao.Titulo" class="form-control" />
+        <span asp-validation-for="Producao.Titulo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Producao.DataLancamento" class="form-label"></label>
+        <input asp-for="Producao.DataLancamento" type="date" class="form-control" />
+        <span asp-validation-for="Producao.DataLancamento" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Producao.Diretor" class="form-label"></label>
+        <input asp-for="Producao.Diretor" class="form-control" />
+        <span asp-validation-for="Producao.Diretor" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Capa (arquivo)</label>
+        <input asp-for="CapaUpload" type="file" class="form-control" id="CapaUpload" />
+        <small class="form-text text-muted">Escolha uma imagem (.jpg, .png). Pré-visualização abaixo.</small>
+        <div class="mt-2">
+            <img id="preview-capa" src="#" alt="Pré-visualização da capa" style="display:none; max-width:200px; border-radius:6px; box-shadow:0 1px 6px rgba(0,0,0,.12);" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><strong>Gêneros</strong></label>
+        <div>
+            @if (Model.TodosGeneros != null && Model.TodosGeneros.Any())
+            {
+                foreach (var genero in Model.TodosGeneros)
+                {
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox"
+                               name="GenerosSelecionados"
+                               id="genero_@genero.Id"
+                               value="@genero.Id"
+                               @(Model.GenerosSelecionados != null && Model.GenerosSelecionados.Contains(genero.Id) ? "checked" : "") />
+                        <label class="form-check-label" for="genero_@genero.Id">@genero.Nome</label>
+                    </div>
+                }
+            }
+            else
+            {
+                <div>Nenhum gênero cadastrado.</div>
+            }
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label"><strong>Elenco (selecione artistas e informe o personagem)</strong></label>
+        <div>
+            @if (Model.TodosArtistas != null && Model.TodosArtistas.Any())
+            {
+                foreach (var artista in Model.TodosArtistas)
+                {
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="form-check me-2">
+                            <input class="form-check-input" type="checkbox"
+                                   name="ArtistasSelecionados"
+                                   id="artista_@artista.Id"
+                                   value="@artista.Id"
+                                   @(Model.ArtistasSelecionados != null && Model.ArtistasSelecionados.Contains(artista.Id) ? "checked" : "") />
+                            <label class="form-check-label" for="artista_@artista.Id">@artista.Nome</label>
+                        </div>
+                        <input type="text" name="Personagem_@artista.Id" class="form-control form-control-sm ms-2" style="max-width:360px;"
+                               placeholder="Nome do personagem (opcional)"
+                               value="@(Model.Personagens != null && Model.Personagens.ContainsKey(artista.Id) ? Model.Personagens[artista.Id] : "")" />
+                    </div>
+                }
+            }
+            else
+            {
+                <div>Nenhum artista cadastrado.</div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Voltar</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        (function () {
+            const input = document.getElementById('CapaUpload');
+            const preview = document.getElementById('preview-capa');
+
+            if (!input) return;
+
+            input.addEventListener('change', function (e) {
+                const file = input.files && input.files[0];
+                if (!file) {
+                    preview.style.display = 'none';
+                    preview.src = '#';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (ev) {
+                    preview.src = ev.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            });
+        })();
+    </script>
+}

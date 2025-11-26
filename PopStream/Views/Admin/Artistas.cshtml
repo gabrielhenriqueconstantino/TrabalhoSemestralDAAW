@@ -1,0 +1,48 @@
+@model IEnumerable<PopStream.Models.Artista>
+
+@{
+    ViewData["Title"] = "Gerenciar Artistas";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-controller="Artistas" asp-action="Create" class="btn btn-success">Criar artista</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="color: #fff">Nome</th>
+            <th style="color: #fff">Data Nasc.</th>
+            <th style="color: #fff">País</th>
+            <th style="color: #fff">Foto</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="color: #fff">@item.Nome</td>
+            <td style="color: #fff">@(item.DataNascimento?.ToString("yyyy-MM-dd") ?? "—")</td>
+            <td style="color: #fff">@(item.PaisNascimento ?? "—")</td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.FotoCaminho))
+                {
+                    <img src="@item.FotoCaminho" alt="Foto" style="width:100px; height:auto; border-radius:6px;" />
+                }
+                else
+                {
+                    <span class="text-muted">Sem foto</span>
+                }
+            </td>
+            <td>
+                <a asp-controller="Artistas" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Editar</a>
+                <a asp-controller="Artistas" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary ms-1">Detalhes</a>
+                <a asp-controller="Artistas" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger ms-1">Excluir</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,40 @@
+﻿@model PopStream.Models.Producao
+
+@{
+    ViewData["Title"] = "Detalhes da Produção";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.CapaCaminho))
+            {
+                <img src="@Model.CapaCaminho" class="img-fluid rounded" alt="Capa" />
+            }
+        </div>
+        <div class="col-md-8">
+            <h2>@Model.Titulo</h2>
+            <p><strong>Diretor:</strong> @Model.Diretor</p>
+            <p><strong>Ano:</strong> @(Model.DataLancamento?.Year.ToString() ?? "N/A")</p>
+
+            <p>
+                <strong>Gêneros:</strong>
+                @foreach (var pg in Model.Generos)
+                {
+                    <span class="badge bg-secondary me-1">@pg.Genero.Nome</span>
+                }
+            </p>
+
+            <h4>Elenco</h4>
+            <ul class="list-group">
+                @foreach (var pa in Model.Artistas)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="@Url.Action("Details", "Artistas", new { id = pa.ArtistaId })">@pa.Artista.Nome</a>
+                        <span class="text-muted">como @(!string.IsNullOrEmpty(pa.NomePersonagem) ? pa.NomePersonagem : "—")</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

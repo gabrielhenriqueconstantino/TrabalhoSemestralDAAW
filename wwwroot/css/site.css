@@ -1,0 +1,149 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+:root{
+  --bg-color: #041224;
+  --text-color: #ffffff;
+  --muted-color: rgba(255,255,255,0.7);
+  --card-bg: #071728;
+  --input-bg: #06202b;
+  --accent: #2a8cff;
+}
+
+/* Fundo e cor de texto geral */
+html, body {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  height: 100%;
+}
+
+/* Navbar: force dark background so links are readable */
+.navbar {
+  background-color: var(--bg-color) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+/* Marca (logo) */
+.navbar-brand img {
+    height: 28px;
+    width: auto;
+    object-fit: contain;
+}
+
+
+/* Navbar links: white and visible on dark background */
+.navbar .nav-link {
+  color: var(--text-color) !important;
+}
+.navbar .nav-link:hover, .navbar .nav-link:focus {
+  color: var(--muted-color) !important;
+}
+
+/* Cards, listas e painéis */
+.card {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.35) !important;
+}
+.card .card-body, .card .card-title, .card .card-text {
+  color: var(--text-color) !important;
+}
+
+/* Forms, inputs e selects */
+.form-control, .form-select, .input-group .form-control {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+.form-control::placeholder {
+  color: rgba(255,255,255,0.45) !important;
+}
+
+/* Buttons */
+.btn, .input-group .btn {
+  color: var(--text-color) !important;
+}
+.btn-primary, .badge.bg-primary {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+}
+.btn-outline-secondary {
+  color: var(--text-color) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+}
+
+/* Links em geral */
+a, a:hover, a:focus {
+  color: var(--text-color) !important;
+}
+
+/* Tabelas e listas */
+.table, .table th, .table td {
+  color: var(--text-color) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  background: transparent !important;
+}
+
+/* Alerts */
+.alert {
+  background-color: rgba(255,255,255,0.02) !important;
+  color: var(--text-color) !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+}
+
+/* Footer */
+.footer {
+  background-color: transparent !important;
+  color: var(--text-color) !important;
+  border-top: 1px solid rgba(255,255,255,0.03) !important;
+}
+
+/* Imagens de capa / cartões: manter contraste com fundo */
+.card-img-top {
+  background-color: var(--bg-color) !important;
+}
+
+img[alt^="Pré-visualização"], img[id^="preview"], #current-foto, #current-capa {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  border-radius: 6px !important;
+}
+
+/* Garantir que elementos que usem text-dark não fiquem invisíveis */
+.text-dark {
+  color: var(--text-color) !important;
+}
+
+/* Containers usam fundo transparente para mostrar a cor do body */
+.container, .container-fluid {
+  color: var(--text-color) !important;
+  background: transparent !important;
+}
+
+/* Forçar texto branco em toda a tabela */
+.table > :not(caption) > * > * {
+    color: #fff !important;
+}
+

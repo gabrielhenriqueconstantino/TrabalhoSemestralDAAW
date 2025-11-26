@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PopStream.Models.Artista>
+
+@{
+    ViewData["Title"] = "Artistas";
+    var termo = ViewBag.Termo as string;
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">@ViewData["Title"]</h1>
+    </div>
+
+    <form asp-action="Index" method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="termo" value="@(termo ?? "")" class="form-control" placeholder="Buscar por nome ou país..." />
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+    </form>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Nenhum artista encontrado.</div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(item.FotoCaminho))
+                        {
+                            <img src="@item.FotoCaminho"
+                                 alt="@item.Nome"
+                                 class="card-img-top"
+                                 style="width:100%; height:220px; object-fit:contain; background:#041224;" />
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center text-white" style="height:220px;">
+                                <span>Sem foto</span>
+                            </div>
+                        }
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="color: black">@item.Nome</h5>
+                            <p class="card-text text-muted mb-2">@(!string.IsNullOrEmpty(item.PaisNascimento) ? item.PaisNascimento : "—")</p>
+
+                            <div class="mt-auto d-flex justify-content-between">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Detalhes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

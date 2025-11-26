@@ -1,0 +1,73 @@
+@model IEnumerable<PopStream.Models.Producao>
+
+@{
+    ViewData["Title"] = "Gerenciar Produções";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-controller="Producoes" asp-action="Create" class="btn btn-success">Criar nova produção</a>
+</p>
+
+<table class="table align-middle" style="color: #fff">
+    <thead>
+        <tr>
+            <th>Capa</th>
+            <th>Título</th>
+            <th>Ano</th>
+            <th>Diretor</th>
+            <th>Gêneros</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:140px;">
+                    @if (!string.IsNullOrEmpty(item.CapaCaminho))
+                    {
+                        <img src="@item.CapaCaminho" alt="Capa" style="max-width:120px; height:auto; border-radius:6px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Sem capa</span>
+                    }
+                </td>
+
+                <td>
+                    <strong>@item.Titulo</strong>
+                </td>
+
+                <td>
+                    @(item.DataLancamento?.Year.ToString() ?? "—")
+                </td>
+
+                <td>
+                    @(!string.IsNullOrEmpty(item.Diretor) ? item.Diretor : "—")
+                </td>
+
+                <td>
+                    @if (item.Generos != null && item.Generos.Any())
+                    {
+                        foreach (var pg in item.Generos)
+                        {
+                            <span class="badge bg-secondary me-1">@pg.Genero?.Nome</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                </td>
+
+                <td class="text-end">
+                    <a asp-action="Details" asp-controller="Producoes" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Detalhes</a>
+                    <a asp-action="Edit" asp-controller="Producoes" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary ms-1">Editar</a>
+                    <a asp-action="Delete" asp-controller="Producoes" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger ms-1">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

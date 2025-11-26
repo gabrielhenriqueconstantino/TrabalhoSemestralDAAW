@@ -1,0 +1,113 @@
+﻿@model PopStream.ViewModels.HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Catálogo";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>@ViewData["Title"]</h1>
+        <a asp-controller="Producoes" asp-action="Index" class="btn btn-outline-primary">Ver catálogo completo</a>
+    </div>
+
+    <form asp-action="Index" method="get" class="row g-2 mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" name="termo" value="@Model.Termo" class="form-control" placeholder="Pesquisar título, diretor, gênero ou artista..." />
+                <button class="btn btn-primary" type="submit">Pesquisar</button>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <select name="generoId" class="form-select" onchange="this.form.submit()">
+                <option value="">Todos os gêneros</option>
+                @foreach (var g in Model.Generos)
+                {
+                    <option value="@g.Id" selected="@(Model.GeneroId == g.Id ? "selected" : null)">@g.Nome</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3 d-flex">
+            <select name="sort" class="form-select me-2" onchange="this.form.submit()">
+                <option value="date_desc" selected="@(Model.Sort == "date_desc")">Mais recentes</option>
+                <option value="date_asc" selected="@(Model.Sort == "date_asc")">Mais antigos</option>
+                <option value="title_asc" selected="@(Model.Sort == "title_asc")">Título A → Z</option>
+                <option value="title_desc" selected="@(Model.Sort == "title_desc")">Título Z → A</option>
+                <option value="genre_asc" selected="@(Model.Sort == "genre_asc")">Gênero A → Z</option>
+                <option value="genre_desc" selected="@(Model.Sort == "genre_desc")">Gênero Z → A</option>
+            </select>
+
+            <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Home")">Limpar</a>
+        </div>
+    </form>
+
+    @if (!Model.Producoes?.Any() ?? true)
+    {
+        <div class="alert alert-info">Nenhuma produção encontrada.</div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+            @foreach (var item in Model.Producoes)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(item.CapaCaminho))
+                        {
+                            <img src="@item.CapaCaminho" class="card-img-top" alt="@item.Titulo" style="height:250px; object-fit:cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center text-white" style="height:250px;">
+                                <span>Sem capa</span>
+                            </div>
+                        }
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title mb-1" style="color: black">@item.Titulo</h5>
+                            <p class="card-text text-muted mb-2">@(item.DataLancamento?.Year.ToString() ?? "—")</p>
+
+                            <div class="mb-2">
+                                @if (item.Generos != null && item.Generos.Any())
+                                {
+                                    foreach (var pg in item.Generos)
+                                    {
+                                        <span class="badge bg-secondary me-1">@pg.Genero?.Nome</span>
+                                    }
+                                }
+                            </div>
+
+                            <div class="mt-auto d-flex justify-content-between">
+                                <a asp-controller="Producoes" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Detalhes</a>
+                                <a asp-controller="Producoes" asp-action="Index" class="btn btn-sm btn-outline-secondary">Mais</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (Model.TotalPages > 1)
+        {
+            <nav aria-label="Paginação" class="mt-3">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { termo = Model.Termo, generoId = Model.GeneroId, sort = Model.Sort, page = Model.Page - 1 })">Anterior</a>
+                    </li>
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { termo = Model.Termo, generoId = Model.GeneroId, sort = Model.Sort, page = i })">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { termo = Model.Termo, generoId = Model.GeneroId, sort = Model.Sort, page = Model.Page + 1 })">Próxima</a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    }
+</div>
